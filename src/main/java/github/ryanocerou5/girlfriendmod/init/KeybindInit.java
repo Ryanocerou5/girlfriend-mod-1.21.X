@@ -7,6 +7,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class KeybindInit {
     public static KeyBinding ACTIVATE_GIRLFRIEND;
+    public static KeyBinding REQUEST_ADVANCE;
 
     public static void registerKeybinds() {
         GirlfriendMod.LOGGER.info("Registering Keybinds for " + GirlfriendMod.MOD_ID);
@@ -14,6 +15,13 @@ public class KeybindInit {
                 new KeyBinding(
                         "key." + GirlfriendMod.MOD_ID + ".activate_girlfriend",
                         GLFW.GLFW_KEY_COMMA,
+                        "category." + GirlfriendMod.MOD_ID
+                )
+        );
+        REQUEST_ADVANCE = KeyBindingHelper.registerKeyBinding(
+                new KeyBinding(
+                        "key." + GirlfriendMod.MOD_ID + ".request_advance",
+                        GLFW.GLFW_KEY_PERIOD,
                         "category." + GirlfriendMod.MOD_ID
                 )
         );

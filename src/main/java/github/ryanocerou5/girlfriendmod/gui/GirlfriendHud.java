@@ -55,6 +55,7 @@ public class GirlfriendHud {
             overlayActivatedTime = System.currentTimeMillis(); // Start animation
 
             client.mouse.unlockCursor();
+            GirlfriendTextManager.startMessage(0);
         }
         else
         {
@@ -185,6 +186,7 @@ public class GirlfriendHud {
                     textX, textY,
                     0xFFFFFF,
                     true);
+
 
             drawContext.getMatrices().pop();
         }
