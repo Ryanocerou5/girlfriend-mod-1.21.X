@@ -17,6 +17,7 @@ import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
@@ -31,15 +32,18 @@ public class GirlfriendHud {
     private static final int GIRLFRIEND_TEXTBOX_TEXTURE_HEIGHT = 256;
     public static boolean overlayEnabled = false;
 
-    // Text positions (relative to screen center)
+    // Choices
     private static final int CHOICE_LEFT_X = -120;
-    private static final int CHOICE_LEFT_Y = 200;
+    private static final int CHOICE_LEFT_Y = 100;
 
     private static final int CHOICE_RIGHT_X = 120;
-    private static final int CHOICE_RIGHT_Y = 200;
+    private static final int CHOICE_RIGHT_Y = 100;
 
     private static final int CHOICE_TOP_X = 0; // centered
     private static final int CHOICE_TOP_Y = 50;
+    private record ClickableChoice(int x1, int y1, int x2, int y2, Choice choice){}
+    private static final List<ClickableChoice> clickableChoices = new ArrayList<>();
+    private static ClickableChoice hoveredChoice = null;
 
     // Animation
     private static long overlayActivatedTime = 0;
@@ -204,7 +208,10 @@ public class GirlfriendHud {
                     true);
 
             Message currentMessage = GirlfriendTextManager.getCurrentMessage();
-            if (currentMessage != null && currentMessage.hasChoices()) {
+
+            if (currentMessage != null && currentMessage.hasChoices() && !GirlfriendTextManager.isTyping()) {
+                clickableChoices.clear();
+
                 List<Choice> choices = currentMessage.choices;
 
                 int centerX = screenWidth / 2;
@@ -232,12 +239,35 @@ public class GirlfriendHud {
 
                     // Draw the choice text centered
                     int choiceWidth = textRenderer.getWidth(choice.text);
+                    int x1 = choiceX - choiceWidth / 2;
+                    int y1 = choiceY;
+                    int x2 = x1 + choiceWidth;
+                    int y2 = y1 + textRenderer.fontHeight;
+
+                    clickableChoices.add(new ClickableChoice(x1, y1, x2, y2, choice));
+
+                    hoveredChoice = null;
+
+                    double mouseX = client.mouse.getX() * screenWidth / client.getWindow().getWidth();
+                    double mouseY = client.mouse.getY() * screenHeight / client.getWindow().getHeight();
+
+                    for (ClickableChoice cc : clickableChoices) {
+                        if (mouseX >= cc.x1 && mouseX <= cc.x2 &&
+                                mouseY >= cc.y1 && mouseY <= cc.y2) {
+                            hoveredChoice = cc;
+                            break;
+                        }
+                    }
+
+                    boolean isHovered = (hoveredChoice != null && hoveredChoice.choice == choice);
+                    int color = isHovered ? 0xFFFF00 : 0xFFFFFF;
+
                     drawContext.drawText(
                             textRenderer,
                             Text.literal(choice.text),
-                            choiceX - textWidth / 2,
+                            choiceX - choiceWidth / 2,
                             choiceY,
-                            0xFFFFFF, // white
+                            color, // white
                             true
                     );
                 }
@@ -245,6 +275,22 @@ public class GirlfriendHud {
 
 
             drawContext.getMatrices().pop();
+        }
+    }
+
+    public static void handleClick(MinecraftClient client) {
+        if (!overlayEnabled) return;
+
+        double mouseX = client.mouse.getX() * client.getWindow().getScaledWidth() /  client.getWindow().getWidth();
+        double mouseY = client.mouse.getY() * client.getWindow().getScaledHeight() / client.getWindow().getHeight();
+
+        for (ClickableChoice cc : clickableChoices) {
+            if (mouseX >= cc.x1 && mouseX <= cc.x2 &&
+                    mouseY >= cc.y1 && mouseY <= cc.y2) {
+
+                GirlfriendTextManager.startMessage(cc.choice.destinationId);
+                return;
+            }
         }
     }
 }

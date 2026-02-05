@@ -17,11 +17,13 @@ public class MouseBlockerMixin {
     private void blockMouseButtons(long window, int button, int action, int mods, CallbackInfo ci) {
         MinecraftClient client = MinecraftClient.getInstance();
 
-        if (GirlfriendHud.overlayEnabled && client.player != null && client.world != null) {
-            if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT || button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-                ci.cancel(); // cancel clicks
-            }
+        if (!GirlfriendHud.overlayEnabled || client.player == null || client.world == null) return;
+        // ONLY react on press
+        if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT && action == GLFW.GLFW_PRESS) {
+            GirlfriendHud.handleClick(client); // <-- call into HUD
         }
+
+        ci.cancel();
     }
 
     // --- Block scroll wheel ---
