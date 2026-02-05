@@ -2,6 +2,7 @@ package github.ryanocerou5.girlfriendmod.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.ryanocerou5.girlfriendmod.GirlfriendMod;
+import github.ryanocerou5.girlfriendmod.text.GirlfriendTextManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -55,7 +56,7 @@ public class GirlfriendHud {
             overlayActivatedTime = System.currentTimeMillis(); // Start animation
 
             client.mouse.unlockCursor();
-            GirlfriendTextManager.startMessage(0);
+            GirlfriendTextManager.startMessage("intro");
         }
         else
         {

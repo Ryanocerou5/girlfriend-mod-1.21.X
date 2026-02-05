@@ -1,7 +1,7 @@
 package github.ryanocerou5.girlfriendmod.client;
 
 import github.ryanocerou5.girlfriendmod.gui.GirlfriendHud;
-import github.ryanocerou5.girlfriendmod.gui.GirlfriendTextManager;
+import github.ryanocerou5.girlfriendmod.text.GirlfriendTextManager;
 import github.ryanocerou5.girlfriendmod.init.KeybindInit;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
