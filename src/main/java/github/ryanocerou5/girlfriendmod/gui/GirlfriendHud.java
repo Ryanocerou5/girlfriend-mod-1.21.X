@@ -2,7 +2,10 @@ package github.ryanocerou5.girlfriendmod.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.ryanocerou5.girlfriendmod.GirlfriendMod;
+import github.ryanocerou5.girlfriendmod.text.Choice;
+import github.ryanocerou5.girlfriendmod.text.GirlfriendTextLibrary;
 import github.ryanocerou5.girlfriendmod.text.GirlfriendTextManager;
+import github.ryanocerou5.girlfriendmod.text.Message;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -13,6 +16,8 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class GirlfriendHud {
@@ -25,6 +30,16 @@ public class GirlfriendHud {
     private static final int GIRLFRIEND_TEXTBOX_TEXTURE_WIDTH = 256;
     private static final int GIRLFRIEND_TEXTBOX_TEXTURE_HEIGHT = 256;
     public static boolean overlayEnabled = false;
+
+    // Text positions (relative to screen center)
+    private static final int CHOICE_LEFT_X = -120;
+    private static final int CHOICE_LEFT_Y = 200;
+
+    private static final int CHOICE_RIGHT_X = 120;
+    private static final int CHOICE_RIGHT_Y = 200;
+
+    private static final int CHOICE_TOP_X = 0; // centered
+    private static final int CHOICE_TOP_Y = 50;
 
     // Animation
     private static long overlayActivatedTime = 0;
@@ -187,6 +202,46 @@ public class GirlfriendHud {
                     textX, textY,
                     0xFFFFFF,
                     true);
+
+            Message currentMessage = GirlfriendTextManager.getCurrentMessage();
+            if (currentMessage != null && currentMessage.hasChoices()) {
+                List<Choice> choices = currentMessage.choices;
+
+                int centerX = screenWidth / 2;
+                int centerY = screenHeight / 2;
+
+                for (int i = 0; i < Math.min(choices.size(), 3); i++) {
+                    Choice choice = choices.get(i);
+
+                    int choiceX = centerX;
+                    int choiceY = centerY;
+
+                    if (choices.size() == 3 && i == 0) { // top choice
+                        choiceX = centerX + CHOICE_TOP_X;
+                        choiceY = CHOICE_TOP_Y;
+                    } else if (i == 0) { // first choice (left)
+                        choiceX = centerX + CHOICE_LEFT_X;
+                        choiceY = CHOICE_LEFT_Y;
+                    } else if (i == 1) { // second choice (right)
+                        choiceX = centerX + CHOICE_RIGHT_X;
+                        choiceY = CHOICE_RIGHT_Y;
+                    } else { // third choice if 3 choices
+                        choiceX = centerX + CHOICE_TOP_X;
+                        choiceY = CHOICE_TOP_Y;
+                    }
+
+                    // Draw the choice text centered
+                    int choiceWidth = textRenderer.getWidth(choice.text);
+                    drawContext.drawText(
+                            textRenderer,
+                            Text.literal(choice.text),
+                            choiceX - textWidth / 2,
+                            choiceY,
+                            0xFFFFFF, // white
+                            true
+                    );
+                }
+            }
 
 
             drawContext.getMatrices().pop();

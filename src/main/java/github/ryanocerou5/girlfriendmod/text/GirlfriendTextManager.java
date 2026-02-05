@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GirlfriendTextManager {
-    private static final Map<String, GirlfriendTextLibrary.Message> MESSAGE_MAP = GirlfriendTextLibrary.MESSAGES
+    private static final Map<String, Message> MESSAGE_MAP = GirlfriendTextLibrary.MESSAGES
             .stream()
             .collect(Collectors.toMap(msg -> msg.id, msg -> msg));
 
@@ -30,7 +30,7 @@ public class GirlfriendTextManager {
 
     public static void requestAdvance()
     {
-        GirlfriendTextLibrary.Message msg = MESSAGE_MAP.get(currentMessageId);
+        Message msg = MESSAGE_MAP.get(currentMessageId);
         if (msg == null) return;
 
         if (state == State.TYPING)
@@ -63,7 +63,7 @@ public class GirlfriendTextManager {
     {
         if (state != State.TYPING) return;
 
-        GirlfriendTextLibrary.Message msg = MESSAGE_MAP.get(currentMessageId);
+        Message msg = MESSAGE_MAP.get(currentMessageId);
         if (msg == null) return;
 
         // Update typing
@@ -85,7 +85,7 @@ public class GirlfriendTextManager {
     public static String getVisibleText()
     {
         updateTyping();
-        GirlfriendTextLibrary.Message msg = MESSAGE_MAP.get(currentMessageId);
+        Message msg = MESSAGE_MAP.get(currentMessageId);
         if (msg == null) return "";
         return msg.text.substring(0, currentCharIndex);
     }
@@ -98,5 +98,9 @@ public class GirlfriendTextManager {
     public static boolean isWaitingForInput()
     {
         return state == State.WAITING_FOR_INPUT;
+    }
+
+    public static Message getCurrentMessage() {
+        return MESSAGE_MAP.get(currentMessageId);
     }
 }
