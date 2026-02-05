@@ -1,5 +1,8 @@
 package github.ryanocerou5.girlfriendmod;
 
+import github.ryanocerou5.girlfriendmod.init.KeybindInit;
+import github.ryanocerou5.girlfriendmod.init.ScreenHandlerInit;
+import github.ryanocerou5.girlfriendmod.init.SoundEventInit;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -11,5 +14,8 @@ public class GirlfriendMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		KeybindInit.registerKeybinds();
+		ScreenHandlerInit.registerScreenHandlers();
+		SoundEventInit.registerSoundEvents();
 	}
 }
