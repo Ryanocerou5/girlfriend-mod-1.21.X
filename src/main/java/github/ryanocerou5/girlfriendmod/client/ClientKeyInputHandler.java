@@ -1,7 +1,7 @@
 package github.ryanocerou5.girlfriendmod.client;
 
 import github.ryanocerou5.girlfriendmod.gui.GirlfriendHud;
-import github.ryanocerou5.girlfriendmod.text.GirlfriendTextManager;
+import github.ryanocerou5.girlfriendmod.manager.TextManager;
 import github.ryanocerou5.girlfriendmod.init.KeybindInit;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
@@ -15,7 +15,7 @@ public class ClientKeyInputHandler {
                 GirlfriendHud.setOverlayEnabled(!GirlfriendHud.overlayEnabled);
             }
             while (KeybindInit.REQUEST_ADVANCE.wasPressed()) {
-                GirlfriendTextManager.requestAdvance();
+                TextManager.requestAdvance();
             }
         });
     }

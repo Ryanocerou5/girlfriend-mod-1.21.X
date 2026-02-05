@@ -3,8 +3,7 @@ package github.ryanocerou5.girlfriendmod.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.ryanocerou5.girlfriendmod.GirlfriendMod;
 import github.ryanocerou5.girlfriendmod.text.Choice;
-import github.ryanocerou5.girlfriendmod.text.GirlfriendTextLibrary;
-import github.ryanocerou5.girlfriendmod.text.GirlfriendTextManager;
+import github.ryanocerou5.girlfriendmod.manager.TextManager;
 import github.ryanocerou5.girlfriendmod.text.Message;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -75,7 +74,7 @@ public class GirlfriendHud {
             overlayActivatedTime = System.currentTimeMillis(); // Start animation
 
             client.mouse.unlockCursor();
-            GirlfriendTextManager.startMessage("intro");
+            TextManager.startMessage("intro");
         }
         else
         {
@@ -195,7 +194,7 @@ public class GirlfriendHud {
             );
             RenderSystem.disableBlend();
 
-            String message = GirlfriendTextManager.getVisibleText();
+            String message = TextManager.getVisibleText();
             int textWidth = textRenderer.getWidth(message);
             int textX = (screenWidth - textWidth) / 2;
             int textY = textboxY + 51 / 2;
@@ -207,9 +206,9 @@ public class GirlfriendHud {
                     0xFFFFFF,
                     true);
 
-            Message currentMessage = GirlfriendTextManager.getCurrentMessage();
+            Message currentMessage = TextManager.getCurrentMessage();
 
-            if (currentMessage != null && currentMessage.hasChoices() && !GirlfriendTextManager.isTyping()) {
+            if (currentMessage != null && currentMessage.hasChoices() && !TextManager.isTyping()) {
                 clickableChoices.clear();
 
                 List<Choice> choices = currentMessage.choices;
@@ -288,7 +287,7 @@ public class GirlfriendHud {
             if (mouseX >= cc.x1 && mouseX <= cc.x2 &&
                     mouseY >= cc.y1 && mouseY <= cc.y2) {
 
-                GirlfriendTextManager.startMessage(cc.choice.destinationId);
+                TextManager.startMessage(cc.choice.destinationId);
                 return;
             }
         }

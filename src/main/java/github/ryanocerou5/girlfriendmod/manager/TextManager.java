@@ -1,10 +1,13 @@
-package github.ryanocerou5.girlfriendmod.text;
+package github.ryanocerou5.girlfriendmod.manager;
+
+import github.ryanocerou5.girlfriendmod.text.TextLibrary;
+import github.ryanocerou5.girlfriendmod.text.Message;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class GirlfriendTextManager {
-    private static final Map<String, Message> MESSAGE_MAP = GirlfriendTextLibrary.MESSAGES
+public class TextManager {
+    private static final Map<String, Message> MESSAGE_MAP = TextLibrary.MESSAGES
             .stream()
             .collect(Collectors.toMap(msg -> msg.id, msg -> msg));
 

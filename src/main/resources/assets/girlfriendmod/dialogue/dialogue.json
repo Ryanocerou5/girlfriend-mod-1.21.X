@@ -1,0 +1,25 @@
+[
+  {
+    "id": "intro",
+    "destinationId": "intro_2",
+    "text": "Hey! My name is Bob!"
+  },
+  {
+    "id": "intro_2",
+    "text": "What's your name?",
+    "choices": [
+      { "text": "Not Bob...", "destinationId": "not_bob" },
+      { "text": "Also Bob", "destinationId": "is_bob" }
+    ]
+  },
+  {
+    "id": "not_bob",
+    "destinationId": "next",
+    "text": "Oh... Okay!"
+  },
+  {
+    "id": "is_bob",
+    "destinationId": "next",
+    "text": "Oh! Okay!"
+  }
+]
